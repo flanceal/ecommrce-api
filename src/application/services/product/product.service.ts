@@ -1,26 +1,29 @@
-import { Injectable } from '@nestjs/common';
-import { CreateProductDto } from '../../modules/product/dto/create-product.dto';
-import { UpdateProductDto } from '../../modules/product/dto/update-product.dto';
+import { Inject, Injectable } from '@nestjs/common';
+import ProductRepository from '../../../domain/product/repository/product.repository';
+import ProvidersConstants from '../../constraints/providers.constraints';
+import CreateProductDto from '../../modules/product/dto/create-product.dto';
+import UpdateProductDto from '../../modules/product/dto/update-product.dto';
 
 @Injectable()
 export class ProductService {
-  create(createProductDto: CreateProductDto) {
-    return 'This action adds a new product';
+  constructor(
+    @Inject(ProvidersConstants.PRODUCT_REPOSITORY)
+    private readonly productRepository: ProductRepository,
+  ) {}
+
+  getProducts() {
+    return this.productRepository.getProducts();
   }
 
-  findAll() {
-    return `This action returns all product`;
+  getProduct(productId: string) {
+    return this.productRepository.getProduct(productId);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  createProduct(createProductDto: CreateProductDto) {
+    return this.productRepository.createProduct(createProductDto);
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  updateProduct(productId: string, updateProductDto: UpdateProductDto) {
+    return this.productRepository.updateProduct(productId, updateProductDto);
   }
 }
