@@ -13,4 +13,6 @@ export default interface ProductRepository {
     productId: string,
     updateProductDto: UpdateProductDto,
   ): Promise<void>;
+
+  deleteProduct(productId: string): Promise<void>;
 }

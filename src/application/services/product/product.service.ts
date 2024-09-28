@@ -26,4 +26,8 @@ export class ProductService {
   updateProduct(productId: string, updateProductDto: UpdateProductDto) {
     return this.productRepository.updateProduct(productId, updateProductDto);
   }
+
+  deleteProduct(productId: string) {
+    return this.productRepository.deleteProduct(productId);
+  }
 }

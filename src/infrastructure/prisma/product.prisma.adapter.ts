@@ -14,6 +14,7 @@ export default class ProductAdapter implements ProductRepository {
 
   async getProducts(): Promise<IProduct[]> {
     const products = await this.prisma.product.findMany();
+
     return this.mapper.toProductEntityBulk(products);
   }
   async getProduct(productId: string): Promise<IProduct> {
@@ -42,6 +43,14 @@ export default class ProductAdapter implements ProductRepository {
         id: productId,
       },
       data: updateProductDto,
+    });
+  }
+
+  async deleteProduct(productId: string): Promise<void> {
+    await this.prisma.product.delete({
+      where: {
+        id: productId,
+      },
     });
   }
 }
