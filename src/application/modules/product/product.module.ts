@@ -1,4 +1,5 @@
 import { Module } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import ProductFromDBMapper from '../../../infrastructure/mapper/prisma.mapper';
 import ProductAdapter from '../../../infrastructure/prisma/product.prisma.adapter';
 import ProvidersConstants from '../../constraints/providers.constraints';
@@ -9,6 +10,7 @@ import { ProductController } from './product.controller';
 @Module({
   providers: [
     ProductService,
+    ConfigService,
     {
       provide: ProvidersConstants.PRODUCT_REPOSITORY,
       useFactory: () =>
