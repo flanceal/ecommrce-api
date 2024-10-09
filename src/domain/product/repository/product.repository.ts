@@ -3,7 +3,10 @@ import UpdateProductDto from '../../../application/modules/product/dto/update-pr
 import IProduct from '../entity/product.entity';
 
 export default interface ProductRepository {
-  getProducts(): Promise<IProduct[]>;
+  getProducts(
+    min_price: number | null,
+    max_price: number | null,
+  ): Promise<IProduct[]>;
 
   getProduct(productId: string): Promise<IProduct>;
 

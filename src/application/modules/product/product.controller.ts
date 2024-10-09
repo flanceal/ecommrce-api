@@ -6,8 +6,12 @@ import {
   Param,
   Patch,
   Post,
+  Query,
+  UseGuards,
 } from '@nestjs/common';
 import IProduct from '../../../domain/product/entity/product.entity';
+import { AuthGuard } from '../../guards/auth/auth.guard';
+import { OptionalParseFloatPipe } from '../../pipes/optionalParseFloat.pipe';
 import { ProductService } from '../../services/product/product.service';
 import CreateProductDto from './dto/create-product.dto';
 import UpdateProductDto from './dto/update-product.dto';
@@ -17,11 +21,14 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
-  async getProduct(): Promise<IProduct[]> {
-    console.log('test');
-    return await this.productService.getProducts();
+  async getProduct(
+    @Query('min_price', OptionalParseFloatPipe) min_price: number | null,
+    @Query('max_price', OptionalParseFloatPipe) max_price: number | null,
+  ): Promise<IProduct[]> {
+    return await this.productService.getProducts(min_price, max_price);
   }
 
+  @UseGuards(AuthGuard)
   @Get(':id')
   async getAProduct(@Param('id') id: string): Promise<IProduct> {
     return this.productService.getProduct(id);

@@ -12,8 +12,18 @@ export default class ProductAdapter implements ProductRepository {
     private mapper: ProductFromDBMapper,
   ) {}
 
-  async getProducts(): Promise<IProduct[]> {
-    const products = await this.prisma.product.findMany();
+  async getProducts(
+    min_price: number | null,
+    max_price: number | null,
+  ): Promise<IProduct[]> {
+    const products = await this.prisma.product.findMany({
+      where: {
+        price: {
+          ...(min_price && { lt: max_price }),
+          ...(max_price && { gt: min_price }),
+        },
+      },
+    });
 
     return this.mapper.toProductEntityBulk(products);
   }

@@ -11,8 +11,8 @@ export class ProductService {
     private readonly productRepository: ProductRepository,
   ) {}
 
-  getProducts() {
-    return this.productRepository.getProducts();
+  getProducts(min_price: number | null, max_price: number | null) {
+    return this.productRepository.getProducts(min_price, max_price);
   }
 
   getProduct(productId: string) {
