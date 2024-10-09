@@ -19,8 +19,8 @@ export default class ProductAdapter implements ProductRepository {
     const products = await this.prisma.product.findMany({
       where: {
         price: {
-          ...(min_price && { lt: max_price }),
-          ...(max_price && { gt: min_price }),
+          ...(max_price !== null && { lt: max_price }),
+          ...(min_price !== null && { gt: min_price }),
         },
       },
     });
