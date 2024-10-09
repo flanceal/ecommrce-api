@@ -22,6 +22,11 @@ export default class CreateProductDto {
   @IsPositive()
   price: number;
 
+  @IsNotEmpty()
+  @IsString()
+  @Length(2, 78)
+  category: string;
+
   @IsOptional()
   @IsString()
   description?: string;

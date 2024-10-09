@@ -6,6 +6,7 @@ export default interface ProductRepository {
   getProducts(
     min_price: number | null,
     max_price: number | null,
+    category: string | null,
   ): Promise<IProduct[]>;
 
   getProduct(productId: string): Promise<IProduct>;

@@ -24,8 +24,13 @@ export class ProductController {
   async getProduct(
     @Query('min_price', OptionalParseFloatPipe) min_price: number | null,
     @Query('max_price', OptionalParseFloatPipe) max_price: number | null,
+    @Query('category') category: string | null,
   ): Promise<IProduct[]> {
-    return await this.productService.getProducts(min_price, max_price);
+    return await this.productService.getProducts(
+      min_price,
+      max_price,
+      category,
+    );
   }
 
   @UseGuards(AuthGuard)

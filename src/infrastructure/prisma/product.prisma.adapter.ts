@@ -15,6 +15,7 @@ export default class ProductAdapter implements ProductRepository {
   async getProducts(
     min_price: number | null,
     max_price: number | null,
+    category: string | null,
   ): Promise<IProduct[]> {
     const products = await this.prisma.product.findMany({
       where: {
@@ -22,6 +23,7 @@ export default class ProductAdapter implements ProductRepository {
           ...(max_price !== null && { lt: max_price }),
           ...(min_price !== null && { gt: min_price }),
         },
+        category: category && category,
       },
     });
 
