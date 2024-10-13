@@ -20,4 +20,20 @@ model Product {
   category String @db.VarChar(255)
   description String?
   imageUrl String? @db.VarChar(255)
+  items CartProduct[]
+}
+
+model Cart {
+  id String @id @default(uuid()) @db.VarChar(36)
+  userId Int
+  items CartProduct[]
+}
+
+model CartProduct {
+  cart Cart @relation(fields: [cartId], references: [id])
+  cartId String 
+  product Product @relation(fields: [productId], references: [id]) 
+  productId String 
+  quatity Int
+  @@id([cartId, productId])
 }
