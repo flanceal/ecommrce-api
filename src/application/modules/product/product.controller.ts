@@ -21,7 +21,7 @@ export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
   @Get()
-  async getProduct(
+  async getProducts(
     @Query('min_price', OptionalParseFloatPipe) min_price: number | null,
     @Query('max_price', OptionalParseFloatPipe) max_price: number | null,
     @Query('category') category: string | null,
@@ -35,7 +35,7 @@ export class ProductController {
 
   @UseGuards(AuthGuard)
   @Get(':id')
-  async getAProduct(@Param('id') id: string): Promise<IProduct> {
+  async getProduct(@Param('id') id: string): Promise<IProduct> {
     return this.productService.getProduct(id);
   }
 

@@ -1,3 +1,5 @@
+import { NotFoundException } from '@nestjs/common';
+import { NotFoundError } from 'rxjs';
 import { PrismaService } from '../../application/services/prisma/prisma.service';
 import CartRepository from '../../domain/cart/repository/cart.repository';
 
@@ -84,10 +86,7 @@ export default class CartAdapter implements CartRepository {
   ): Promise<void> {
     const cart = await this.getCartById(userId);
 
-    await this.prisma.cartProduct.update({
-      data: {
-        quantity,
-      },
+    const cartProduct = await this.prisma.cartProduct.findUnique({
       where: {
         cartId_productId: {
           cartId: cart.id,
@@ -95,12 +94,26 @@ export default class CartAdapter implements CartRepository {
         },
       },
     });
+
+    if (cartProduct) {
+      await this.prisma.cartProduct.update({
+        data: { quantity },
+        where: {
+          cartId_productId: {
+            cartId: cart.id,
+            productId: productId,
+          },
+        },
+      });
+    } else {
+      throw new NotFoundException('Product does not exist in the cart');
+    }
   }
 
   async getProductFromCart(userId: string, productId: string): Promise<any> {
     const cart = await this.getCartById(userId);
 
-    return await this.prisma.cartProduct.findUnique({
+    const product = await this.prisma.cartProduct.findUnique({
       where: {
         cartId_productId: {
           cartId: cart.id,
@@ -108,5 +121,7 @@ export default class CartAdapter implements CartRepository {
         },
       },
     });
+
+    return product;
   }
 }

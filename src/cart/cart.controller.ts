@@ -14,6 +14,7 @@ import { CartGuard } from '../application/guards/cart/cart.guard';
 import { ExtendedRequest } from '../application/types/extended.request';
 import { CartService } from './cart.service';
 import { AddProductToCartDto } from './dto/add-product-to-cart';
+import { UpdateProductToCartDto } from './dto/update-product.dto';
 
 @UseGuards(AuthGuard, CartGuard)
 @Controller('/api/v1/cart')
@@ -60,13 +61,14 @@ export class CartController {
   updateProductCart(
     @Param('productId') productId: string,
     @Req() request: ExtendedRequest,
-    @Body() updateProductCart: AddProductToCartDto,
+    @Body() updateProductCart: UpdateProductToCartDto,
   ) {
     const userId = request['userId'];
     return this.cartService.updateProductCart(
       userId,
       productId,
       updateProductCart.quantity,
+      updateProductCart.action,
     );
   }
 }
